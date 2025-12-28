@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- डायनामिक टाइटल -->
+    <title data-lang-key="title">Interactive HTML Cheatsheet</title>
+    <!-- Font Awesome CDN (Moved from CSS @import for better performance) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Base Styles and Variables --- */
+        :root {
+            --primary-color: #0a84ff;
+            --secondary-color: #50c878; /* Emerald green */
+            --accent-color: #ff9f0a; /* Amber */
+            --gradient-start: var(--primary-color);
+            --gradient-end: #5e5ce6; /* Indigo */
+
+            /* Dark Theme (Default) */
+            --bg-color: #121212; /* Slightly darker */
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --muted-text-color: #8e8e93;
+            --border-color: #3a3a3c;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --code-bg: #2c2c2e;
+            --code-color: var(--accent-color);
+            --link-color: var(--primary-color);
+            --focus-ring-color: var(--accent-color);
+        }
+
+        .light-theme {
+            --primary-color: #007aff;
+            --secondary-color: #34c759;
+            --accent-color: #ff9500;
+            --gradient-start: var(--primary-color);
+            --gradient-end: #5856d6;
+
+            --bg-color: #f2f2f7;
+            --card-bg: #ffffff;
+            --text-color: #1c1c1e;
+            --muted-text-color: #636366;
+            --border-color: #d1d1d6;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --code-bg: #eef1f4;
+            --code-color: #d73a49; /* GitHub-like code color */
+            --link-color: var(--primary-color);
+            --focus-ring-color: var(--primary-color);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1300px; /* Slightly wider */
+            margin: 0 auto;
+            padding: 20px 25px; /* More padding */
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover, a:focus {
+            text-decoration: underline;
+            color: var(--secondary-color);
+        }
+
+        /* Focus Styles for Accessibility */
+        *:focus-visible {
+            outline: 3px solid var(--focus-ring-color);
+            outline-offset: 2px;
+            border-radius: 4px; /* Optional: makes focus ring look better */
+        }
+        /* Hide focus styles for mouse users, keep for keyboard */
+        *:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+
+        /* --- Header --- */
+        header {
+            background: linear-gradient(100deg, var(--gradient-start), var(--gradient-end));
+            padding: 50px 25px 40px; /* More padding */
+            text-align: center;
+            border-bottom-left-radius: 40px; /* Softer curve */
+            border-bottom-right-radius: 40px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+
+        header h1 {
+            font-size: clamp(2em, 5vw, 3.2em); /* Responsive font size */
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-out;
+        }
+        header p {
+             color: rgba(255,255,255,0.85);
+             animation: fadeInUp 1s ease-out 0.3s;
+             font-size: clamp(0.9em, 2.5vw, 1.1em);
+        }
+
+        .html-logo {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            width: clamp(40px, 6vw, 60px); /* Responsive size */
+            height: auto;
+            opacity: 0.9;
+            filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.4));
+            animation: subtleRotate 15s linear infinite;
+        }
+        .html-logo svg { fill: white; }
+
+        /* --- Settings Button --- */
+        .settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.3em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .settings-btn:hover, .settings-btn:focus-visible {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) rotate(15deg);
+        }
+
+
+        /* --- Grid & Cards --- */
+        main {
+            display: block; /* Ensure main is treated as block */
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); /* Better minmax */
+            gap: 30px; /* Increased gap */
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px; /* Softer radius */
+            padding: 30px; /* Increased padding */
+            box-shadow: 0 8px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeInUpCard 0.6s ease-out forwards;
+            display: flex; /* Use flex for internal alignment */
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 14px 40px var(--shadow-color);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin: -30px -30px 25px -30px; /* Pull header to edges */
+            padding: 15px 30px; /* Padding inside header */
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.5em; /* Adjusted size */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0)); /* Subtle gradient */
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .card h2 i {
+            color: var(--secondary-color);
+            font-size: 1em; /* Match text size */
+            transition: color 0.3s ease;
+        }
+
+        /* --- Tag Items & Examples --- */
+        .tag-list {
+             flex-grow: 1; /* Allow list to take available space */
+        }
+
+        .tag-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+        .tag-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tag-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px 15px; /* Row and column gap */
+        }
+
+        .tag-name {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 500;
+            font-size: 0.95em;
+            white-space: nowrap;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .tag-description {
+            color: var(--muted-text-color);
+            flex-basis: 100%; /* Default to full width */
+            margin-top: 5px;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        /* On wider screens, allow description next to tag name if space */
+        @media (min-width: 500px) {
+             .tag-description {
+                flex-basis: auto;
+                flex-grow: 1;
+                margin-left: 10px;
+                margin-top: 0;
+            }
+        }
+
+        .toggle-example {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 6px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            margin-left: auto; /* Push to the right */
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .toggle-example i { /* Icon inside button */
+             transition: transform 0.3s ease;
+        }
+        .toggle-example.active i {
+            transform: rotate(180deg);
+        }
+
+        .toggle-example:hover, .toggle-example:focus-visible {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
+        }
+         .toggle-example:active {
+            transform: translateY(0px);
+            box-shadow: none;
+        }
+
+        .example {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), /* Smoother ease */
+                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s ease-in-out,
+                        background-color 0.3s ease, border-color 0.3s ease;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+            visibility: hidden; /* Use visibility for better transition handling */
+        }
+
+        .example.visible {
+            max-height: 600px; /* Increased max height */
+            padding: 15px;
+            margin-top: 15px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .example pre {
+            background-color: transparent; /* Inherit from .example */
+            padding: 0; /* Remove padding here */
+            margin: 0; /* Remove margin here */
+            border-radius: 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .example code {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--text-color); /* Use main text color */
+            font-size: 0.9em;
+            line-height: 1.6; /* Improve code readability */
+            display: block; /* Ensure block display */
+        }
+
+        /* --- Basic Syntax Highlighting (Refined) --- */
+        .example code .html-tag { color: #e06c75; } /* Reddish for tags */
+        .light-theme .example code .html-tag { color: #d73a49; }
+        .example code .html-tag-symbol { color: #abb2bf; } /* Angle brackets */
+        .light-theme .example code .html-tag-symbol { color: #586069; }
+        .example code .html-attr-name { color: #d19a66; } /* Orange for attribute names */
+        .light-theme .example code .html-attr-name { color: #6f42c1; }
+        .example code .html-attr-value { color: #98c379; } /* Green for attribute values */
+        .light-theme .example code .html-attr-value { color: #032f62; }
+        .example code .html-comment { color: #5c6370; font-style: italic; } /* Grey for comments */
+        .light-theme .example code .html-comment { color: #6a737d; }
+        .example code .html-entity { color: #56b6c2; } /* Teal for entities like &lt; */
+        .light-theme .example code .html-entity { color: #005cc5; }
+        .example code .html-js-event { color: #c678dd; font-style: italic; } /* Purple for inline JS */
+        .light-theme .example code .html-js-event { color: #e36209; }
+
+
+        /* --- Visualizations (Improved Styling) --- */
+        .table-visual {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.1); /* Subtle background */
+            font-size: 0.85em;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .light-theme .table-visual { background: rgba(0,0,0,0.03); }
+
+        .table-visual div[class^="tv-"] { /* Target only tv-* divs */
+            border: 1px dashed var(--muted-text-color);
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .table-visual .tv-table { background: rgba(10, 132, 255, 0.1); border-color: rgba(10, 132, 255, 0.5); }
+        .table-visual .tv-thead { background: rgba(80, 200, 120, 0.1); border-color: rgba(80, 200, 120, 0.5); }
+        .table-visual .tv-tbody { background: rgba(255, 159, 10, 0.1); border-color: rgba(255, 159, 10, 0.5); }
+        .table-visual .tv-tr { border-style: solid; border-width: 1px; border-color: var(--muted-text-color); display: flex; gap: 8px; padding: 5px; }
+        .table-visual .tv-th, .table-visual .tv-td { flex: 1; background: var(--card-bg); border: 1px solid var(--border-color); font-weight: bold; }
+        .table-visual .tv-td { font-weight: normal; }
+
+        .dom-tree {
+            list-style: none;
+            padding-left: 25px; /* Increased indent */
+            margin-top: 15px;
+            position: relative; /* For pseudo-elements */
+        }
+        /* Connecting lines */
+        .dom-tree::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 5px;
+            width: 1px;
+            background: var(--border-color);
+        }
+        .dom-tree li {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .dom-tree li::before { /* Horizontal connector */
+            content: '';
+            position: absolute;
+            top: 10px; /* Adjust vertical position */
+            left: -20px; /* Connect to vertical line */
+            width: 15px;
+            height: 1px;
+            background: var(--border-color);
+        }
+        .dom-tree .tag {
+            background: var(--code-bg);
+            color: var(--code-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9em;
+            display: inline-block; /* Ensure background fits content */
+        }
+        .dom-tree .desc {
+            color: var(--muted-text-color);
+            font-size: 0.85em;
+            margin-left: 8px;
+        }
+
+
+        /* --- Settings Modal --- */
+        .settings-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .settings-modal-content {
+            background-color: var(--card-bg);
+            margin: 10vh auto; /* Centered vertically */
+            padding: 30px 35px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .close-settings-btn {
+            color: var(--muted-text-color);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            background: none;
+            border: none;
+            padding: 5px;
+            line-height: 1;
+        }
+        .close-settings-btn:hover, .close-settings-btn:focus {
+            color: var(--text-color);
+            transform: scale(1.2);
+        }
+
+        .settings-modal h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 1.6em;
+        }
+
+        .setting-item {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+         .setting-item:last-child {
+             border-bottom: none;
+             margin-bottom: 0;
+             padding-bottom: 0;
+         }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Custom Toggle Switch for Theme */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .theme-label { margin-left: 10px; vertical-align: middle; }
+
+        /* Language Selector */
+        .language-select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .language-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.3);
+        }
+
+        /* About Section */
+        .about-section p {
+            font-size: 0.95em;
+            color: var(--muted-text-color);
+            margin-bottom: 10px;
+        }
+        .about-section strong { color: var(--text-color); }
+
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px 20px;
+            color: var(--muted-text-color);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+         @keyframes fadeInUpCard { /* Separate for cards for potential stagger */
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtleRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            header { padding: 40px 20px 30px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; margin-bottom: 40px; }
+            .html-logo { top: 15px; left: 15px; }
+            .settings-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 1.1em; }
+            .grid-container { gap: 25px; }
+            .card { padding: 20px; border-radius: 12px; }
+            .card h2 { margin: -20px -20px 20px -20px; padding: 12px 20px; font-size: 1.3em; gap: 10px; border-top-left-radius: 12px; border-top-right-radius: 12px;}
+            .settings-modal-content { width: 95%; margin: 5vh auto; padding: 25px; }
+            .settings-modal h2 { font-size: 1.4em; }
+        }
+
+        @media (max-width: 480px) {
+             html { font-size: 15px; } /* Slightly smaller base font */
+             header { padding: 30px 15px 25px; }
+             .html-logo { display: none; } /* Hide logo on very small screens */
+             .card { padding: 15px; }
+             .card h2 { margin: -15px -15px 15px -15px; padding: 10px 15px; font-size: 1.2em; gap: 8px; }
+             .tag-info { gap: 8px 10px; }
+             .tag-name { padding: 3px 8px; font-size: 0.9em; }
+             .tag-description { font-size: 0.85em; }
+             .toggle-example { padding: 5px 12px; font-size: 0.75em; }
+             .example code { font-size: 0.85em; }
+             footer { font-size: 0.8em; padding: 20px 15px; }
+             .settings-modal-content { padding: 20px; }
+             .settings-modal h2 { font-size: 1.3em; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="html-logo" aria-hidden="true"> <!-- Hide decorative SVG from screen readers -->
+            <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><title>HTML5 Logo</title><path d="M11.375 0l9.094 102.063 43.5 12.094 43.47-12.094L116.594 0zm94.094 36.563H40.063l1.624 18.312h61.062l-4.594 51.625-23.625 6.594-23.656-6.594-.875-17.032h17.875l.875 9.063 16.313 4.5 16.313-4.5 1.625-18.344H30.094l-5.438-61.562h89.438z" fill="#FFF"/></svg>
+        </div>
+        <!-- Settings Button -->
+        <button class="settings-btn" id="settings-btn" aria-label="Open Settings">
+            <i class="fas fa-cog"></i>
+        </button>
+
+        <h1 data-lang-key="headerTitle">Interactive HTML Cheatsheet</h1>
+        <p data-lang-key="headerSubtitle">Learn HTML in a modern, interactive, and visual way</p>
+    </header>
+
+    <!-- Use main element for primary content -->
+    <main class="container">
+        <div class="grid-container">
+
+            <!-- Card: Document Outline -->
+            <section id="document-outline" class="card">
+                <h2 data-lang-key="cardTitleOutline"><i class="fas fa-file-alt"></i>Document Outline</h2>
+                <div class="tag-list">
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;!DOCTYPE html&gt;</span>
+                            <span class="tag-description" data-lang-key="descDoctype">Declares the HTML version (this is HTML5)</span>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;html&gt;</span>
+                            <span class="tag-description" data-lang-key="descHtml">Root element of the entire HTML document</span>
+                            <button class="toggle-example" aria-expanded="false" aria-controls="ex-html"><span data-lang-key="btnShow">Show</span> Structure <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="example" id="ex-html" role="region">
+                            <p data-lang-key="visHtml">This encloses the entire page.</p>
+                            <ul class="dom-tree">
+                                <li><span class="tag">&lt;html&gt;</span>
+                                    <ul class="dom-tree">
+                                        <li><span class="tag">&lt;head&gt;</span><span class="desc" data-lang-key="visHead">... meta info</span></li>
+                                        <li><span class="tag">&lt;body&gt;</span><span class="desc" data-lang-key="visBody">... page content</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;head&gt;</span>
+                            <span class="tag-description" data-lang-key="descHead">Contains meta-information about the page (not visible)</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-head"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                         <div class="example" id="ex-head" role="region">
+                            <p data-lang-key="visHeadDesc">Includes title, stylesheet links, scripts, etc.</p>
+                            <pre><code class="language-html">&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;<span data-lang-key="visPageTitle">Page Title</span>&lt;/title&gt;
+  &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;</code></pre>
+                        </div>
+                    </div>
+                     <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;body&gt;</span>
+                            <span class="tag-description" data-lang-key="descBody">Contains the visible content of the page</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-body"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                         <div class="example" id="ex-body" role="region">
+                            <p data-lang-key="visBodyDesc">All visible elements (headings, paragraphs, images, links, etc.) go here.</p>
+                            <pre><code class="language-html">&lt;body&gt;
+  &lt;h1&gt;<span data-lang-key="visMainHeading">Main Heading</span>&lt;/h1&gt;
+  &lt;p&gt;<span data-lang-key="visAParagraph">This is a paragraph.</span>&lt;/p&gt;
+  &lt;img src="image.jpg" alt="<span data-lang-key="visDescription">Description</span>"&gt;
+&lt;/body&gt;</code></pre>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Card: Document Structure -->
+            <section id="document-structure" class="card">
+                <h2 data-lang-key="cardTitleStructure"><i class="fas fa-sitemap"></i>Document Structure</h2>
+                <div class="tag-list">
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;h1&gt; - &lt;h6&gt;</span>
+                            <span class="tag-description" data-lang-key="descH1H6">Headings (most to least important)</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-h1h6"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="example" id="ex-h1h6" role="region">
+                            <pre><code class="language-html">&lt;h1&gt;<span data-lang-key="visLevel1">Level 1 Heading</span>&lt;/h1&gt;
+&lt;h2&gt;<span data-lang-key="visLevel2">Level 2 Heading</span>&lt;/h2&gt;
+&lt;h3&gt;<span data-lang-key="visLevel3">Level 3 Heading</span>&lt;/h3&gt;
+&lt;!-- ... <span data-lang-key="visUpToH6">up to h6</span> --&gt;</code></pre>
+                            <p><em data-lang-key="visStructureHelp">Helps structure the content.</em></p>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;div&gt;</span>
+                            <span class="tag-description" data-lang-key="descDiv">A block-level section (division)</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-div"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="example" id="ex-div" role="region">
+                            <p data-lang-key="visDivDesc">Generic container for styling or grouping.</p>
+                            <pre><code class="language-html">&lt;div class="container"&gt;
+  &lt;h2&gt;<span data-lang-key="visSectionTitle">Section Title</span>&lt;/h2&gt;
+  &lt;p&gt;<span data-lang-key="visSomeContent">Some content.</span>&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;span&gt;</span>
+                            <span class="tag-description" data-lang-key="descSpan">An inline section</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-span"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="example" id="ex-span" role="region">
+                            <p data-lang-key="visSpanDesc">Used to style a part of text.</p>
+                            <pre><code class="language-html">&lt;p&gt;<span data-lang-key="visThisIs">This is</span> &lt;span style="color: red;"&gt;<span data-lang-key="visRed">red</span>&lt;/span&gt; <span data-lang-key="visText">text</span>.&lt;/p&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;p&gt;</span>
+                            <span class="tag-description" data-lang-key="descP">Paragraph</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-p"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div class="example" id="ex-p" role="region">
+                            <pre><code class="language-html">&lt;p&gt;<span data-lang-key="visParaText">This is a paragraph of text. Browsers usually add some vertical space before and after paragraphs.</span>&lt;/p&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;br&gt;</span>
+                            <span class="tag-description" data-lang-key="descBr">Line break (new line)</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-br"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                         <div class="example" id="ex-br" role="region">
+                            <p data-lang-key="visBrDesc">Forces a line break.</p>
+                            <pre><code class="language-html"><span data-lang-key="visFirstLine">First line.</span>&lt;br&gt;
+<span data-lang-key="visSecondLine">Second line.</span></code></pre>
+                        </div>
+                    </div>
+                    <div class="tag-item">
+                        <div class="tag-info">
+                            <span class="tag-name">&lt;hr&gt;</span>
+                            <span class="tag-description" data-lang-key="descHr">Horizontal rule (thematic break)</span>
+                             <button class="toggle-example" aria-expanded="false" aria-controls="ex-hr"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button>
+                        </div>
+                         <div class="example" id="ex-hr" role="region">
+                            <p data-lang-key="visHrDesc">Represents a thematic break in content, often rendered as a horizontal line.</p>
+                            <pre><code class="language-html">&lt;p&gt;<span data-lang-key="visFirstTopic">First topic.</span>&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;<span data-lang-key="visSecondTopic">Second topic.</span>&lt;/p&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Card: Text Markup -->
+            <section id="text-markup" class="card">
+                 <h2 data-lang-key="cardTitleTextMarkup"><i class="fas fa-pen-fancy"></i>Text Markup</h2>
+                 <div class="tag-list">
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;strong&gt;</span><span class="tag-description" data-lang-key="descStrong">Strong importance (usually bold)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-strong"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-strong" role="region"><pre><code>&lt;strong&gt;<span data-lang-key="visImportantText">Important Text</span>&lt;/strong&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;em&gt;</span><span class="tag-description" data-lang-key="descEm">Emphasis (usually italic)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-em"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-em" role="region"><pre><code>&lt;em&gt;<span data-lang-key="visEmphasizedText">Emphasized Text</span>&lt;/em&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;blockquote&gt;</span><span class="tag-description" data-lang-key="descBlockquote">Long quotation (indented)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-blockquote"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-blockquote" role="region"><pre><code>&lt;blockquote cite="source_url"&gt;
+  <span data-lang-key="visLongQuote">This is a long quotation from another source...</span>
+&lt;/blockquote&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;q&gt;</span><span class="tag-description" data-lang-key="descQ">Short inline quotation (adds quotes)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-q"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-q" role="region"><pre><code><span data-lang-key="visHeSaid">He said</span>, &lt;q&gt;Hello&lt;/q&gt;.</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;abbr&gt;</span><span class="tag-description" data-lang-key="descAbbr">Abbreviation</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-abbr"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-abbr" role="region"><pre><code>&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                         <div class="tag-info"><span class="tag-name">&lt;acronym&gt;</span><span class="tag-description" data-lang-key="descAcronym">(Obsolete - use &lt;abbr&gt;)</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;address&gt;</span><span class="tag-description" data-lang-key="descAddress">Contact information</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-address"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-address" role="region"><pre><code>&lt;address&gt;
+  <span data-lang-key="visWrittenBy">Written by</span> John Doe&lt;br&gt;
+  <span data-lang-key="visVisitUs">Visit us at</span>:&lt;br&gt;
+  Example.com&lt;br&gt;
+  Box 564, Disneyland&lt;br&gt;
+  USA
+&lt;/address&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;pre&gt;</span><span class="tag-description" data-lang-key="descPre">Preformatted text (preserves spaces/breaks)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-pre"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-pre" role="region"><pre><code>&lt;pre&gt;
+  <span data-lang-key="visPreText">Text in a pre element
+  is displayed in a fixed-width
+  font, and it preserves
+  both      spaces and
+  line breaks.</span>
+&lt;/pre&gt;</code></pre></div>
+                     </div>
+                    <div class="tag-item">
+                         <div class="tag-info"><span class="tag-name">&lt;dfn&gt;</span><span class="tag-description" data-lang-key="descDfn">Definition term</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-dfn"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                         <div class="example" id="ex-dfn" role="region"><pre><code>&lt;p&gt;<span data-lang-key="visDfnText">The</span> &lt;dfn&gt;World Wide Web&lt;/dfn&gt; <span data-lang-key="visDfnText2">is a system...</span>&lt;/p&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;code&gt;</span><span class="tag-description" data-lang-key="descCode">Piece of computer code</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-code"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-code" role="region"><pre><code><span data-lang-key="visCodeText">The</span> &lt;code&gt;console.log('Hello');&lt;/code&gt; <span data-lang-key="visCodeText2">function...</span></code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;cite&gt;</span><span class="tag-description" data-lang-key="descCite">Title of a work (book, film, etc.)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-cite"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-cite" role="region"><pre><code>&lt;p&gt;&lt;cite&gt;The Scream&lt;/cite&gt; <span data-lang-key="visByEdvard">by Edvard Munch. Painted in 1893.</span>&lt;/p&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;del&gt;</span><span class="tag-description" data-lang-key="descDel">Deleted text (strike-through)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-del"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-del" role="region"><pre><code>&lt;p&gt;<span data-lang-key="visMyFavColor">My favorite color is</span> &lt;del&gt;<span data-lang-key="visBlue">blue</span>&lt;/del&gt; <span data-lang-key="visRed">red</span>.&lt;/p&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;ins&gt;</span><span class="tag-description" data-lang-key="descIns">Inserted text (underline)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-ins"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-ins" role="region"><pre><code>&lt;p&gt;<span data-lang-key="visMyFavColor">My favorite color is</span> &lt;del&gt;<span data-lang-key="visBlue">blue</span>&lt;/del&gt; &lt;ins&gt;<span data-lang-key="visRed">red</span>&lt;/ins&gt;.&lt;/p&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;sub&gt;</span><span class="tag-description" data-lang-key="descSub">Subscript text</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-sub"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-sub" role="region"><pre><code>&lt;p&gt;H&lt;sub&gt;2&lt;/sub&gt;O&lt;/p&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;sup&gt;</span><span class="tag-description" data-lang-key="descSup">Superscript text</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-sup"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-sup" role="region"><pre><code>&lt;p&gt;E = mc&lt;sup&gt;2&lt;/sup&gt;&lt;/p&gt;</code></pre></div>
+                     </div>
+                      <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;bdo&gt;</span><span class="tag-description" data-lang-key="descBdo">Text direction override</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-bdo"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-bdo" role="region"><pre><code>&lt;!-- <span data-lang-key="visForRTL">For right-to-left text</span> --&gt;
+&lt;bdo dir="rtl"&gt;<span data-lang-key="visRTLText">This text will go right-to-left</span>&lt;/bdo&gt;</code></pre></div>
+                     </div>
+                 </div>
+             </section>
+
+            <!-- Card: Lists -->
+            <section id="lists" class="card">
+                 <h2 data-lang-key="cardTitleLists"><i class="fas fa-list-ul"></i>Lists</h2>
+                 <div class="tag-list">
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;ul&gt;</span><span class="tag-description" data-lang-key="descUl">Unordered list (bullets)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-ul"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-ul" role="region"><pre><code>&lt;ul&gt;
+  &lt;li&gt;<span data-lang-key="visCoffee">Coffee</span>&lt;/li&gt;
+  &lt;li&gt;<span data-lang-key="visTea">Tea</span>&lt;/li&gt;
+  &lt;li&gt;<span data-lang-key="visMilk">Milk</span>&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;ol&gt;</span><span class="tag-description" data-lang-key="descOl">Ordered list (numbers)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-ol"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-ol" role="region"><pre><code>&lt;ol&gt;
+  &lt;li&gt;<span data-lang-key="visFirstItem">First item</span>&lt;/li&gt;
+  &lt;li&gt;<span data-lang-key="visSecondItem">Second item</span>&lt;/li&gt;
+  &lt;li&gt;<span data-lang-key="visThirdItem">Third item</span>&lt;/li&gt;
+&lt;/ol&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;li&gt;</span><span class="tag-description" data-lang-key="descLi">List item</span></div>
+                        <!-- Example included in ul/ol -->
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;dl&gt;</span><span class="tag-description" data-lang-key="descDl">Definition list</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-dl"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-dl" role="region"><pre><code>&lt;dl&gt;
+  &lt;dt&gt;<span data-lang-key="visCoffee">Coffee</span>&lt;/dt&gt;
+  &lt;dd&gt;- <span data-lang-key="visBlackHot">black hot drink</span>&lt;/dd&gt;
+  &lt;dt&gt;<span data-lang-key="visMilk">Milk</span>&lt;/dt&gt;
+  &lt;dd&gt;- <span data-lang-key="visWhiteCold">white cold drink</span>&lt;/dd&gt;
+&lt;/dl&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;dt&gt;</span><span class="tag-description" data-lang-key="descDt">Definition term</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;dd&gt;</span><span class="tag-description" data-lang-key="descDd">Term description</span></div>
+                     </div>
+                 </div>
+             </section>
+
+            <!-- Card: Tables -->
+            <section id="tables" class="card">
+                 <h2 data-lang-key="cardTitleTables"><i class="fas fa-table-cells-large"></i>Tables</h2> <!-- Changed icon -->
+                 <div class="tag-list">
+                    <div class="tag-item">
+                         <div class="tag-info"><span class="tag-name">&lt;table&gt;</span><span class="tag-description" data-lang-key="descTable">Table container</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-table"><span data-lang-key="btnShow">Show</span> Structure/Example <i class="fas fa-chevron-down"></i></button></div>
+                         <div class="example" id="ex-table" role="region">
+                            <p data-lang-key="visTableDesc">Used to create tabular data.</p>
+                            <div class="table-visual">
+                                <div class="tv-table">Table
+                                    <div class="tv-thead">Thead (<span data-lang-key="visOptional">Optional</span>)
+                                        <div class="tv-tr">TR (Row)
+                                            <div class="tv-th">TH (Header)</div>
+                                            <div class="tv-th">TH (Header)</div>
+                                        </div>
+                                    </div>
+                                    <div class="tv-tbody">Tbody
+                                         <div class="tv-tr">TR (Row)
+                                            <div class="tv-td">TD (Data)</div>
+                                            <div class="tv-td">TD (Data)</div>
+                                        </div>
+                                         <div class="tv-tr">TR (Row)
+                                            <div class="tv-td">TD (Data)</div>
+                                            <div class="tv-td">TD (Data)</div>
+                                        </div>
+                                    </div>
+                                    <!-- Optional: Tfoot visual -->
+                                </div>
+                            </div>
+                            <pre><code class="language-html">&lt;!-- <span data-lang-key="visRemoveBorderAttr">Removed border attribute, use CSS instead</span> --&gt;
+&lt;table&gt;
+  &lt;caption&gt;<span data-lang-key="visMonthlySavings">Monthly Savings</span>&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope="col"&gt;<span data-lang-key="visMonth">Month</span>&lt;/th&gt; &lt;!-- Added scope --&gt;
+      &lt;th scope="col"&gt;<span data-lang-key="visSavings">Savings</span>&lt;/th&gt; &lt;!-- Added scope --&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;<span data-lang-key="visJanuary">January</span>&lt;/td&gt;
+      &lt;td&gt;$100&lt;/td&gt;
+    &lt;/tr&gt;
+     &lt;tr&gt;
+      &lt;td&gt;<span data-lang-key="visFebruary">February</span>&lt;/td&gt;
+      &lt;td&gt;$80&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;
+      &lt;th scope="row"&gt;<span data-lang-key="visTotal">Total</span>&lt;/th&gt; &lt;!-- Added scope --&gt;
+      &lt;td&gt;$180&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;</code></pre>
+                         </div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;caption&gt;</span><span class="tag-description" data-lang-key="descCaption">Table caption</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;thead&gt;</span><span class="tag-description" data-lang-key="descThead">Table header group</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;tbody&gt;</span><span class="tag-description" data-lang-key="descTbody">Table body group</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;tfoot&gt;</span><span class="tag-description" data-lang-key="descTfoot">Table footer group</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;tr&gt;</span><span class="tag-description" data-lang-key="descTr">Table row</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;th&gt;</span><span class="tag-description" data-lang-key="descTh">Table header cell (use `scope` attribute)</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;td&gt;</span><span class="tag-description" data-lang-key="descTd">Table data cell</span></div>
+                     </div>
+                    <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;colgroup&gt;</span><span class="tag-description" data-lang-key="descColgroup">Group of columns</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-colgroup"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-colgroup" role="region"><pre><code>&lt;table&gt;
+  &lt;colgroup&gt;
+    &lt;col span="2" style="background-color: #ffdddd;"&gt; &lt;!-- Lighter red --&gt;
+    &lt;col style="background-color: #ffffcc;"&gt; &lt;!-- Lighter yellow --&gt;
+  &lt;/colgroup&gt;
+  &lt;thead&gt;
+    &lt;!-- ... --&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;!-- ... --&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;col&gt;</span><span class="tag-description" data-lang-key="descCol">Table column properties</span></div>
+                     </div>
+                 </div>
+             </section>
+
+            <!-- Card: Form Elements -->
+             <section id="form-elements" class="card">
+                 <h2 data-lang-key="cardTitleForms"><i class="fas fa-edit"></i>Form Elements</h2> <!-- Changed icon -->
+                 <div class="tag-list">
+                     <div class="tag-item">
+                         <div class="tag-info"><span class="tag-name">&lt;form&gt;</span><span class="tag-description" data-lang-key="descForm">Container for user input</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-form"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                         <div class="example" id="ex-form" role="region"><pre><code>&lt;form action="/submit-page.php" method="post"&gt;
+  &lt;!-- <span data-lang-key="visFormElementsHere">Form elements go here</span> --&gt;
+  &lt;label for="username-id"&gt;<span data-lang-key="visUsername">Username</span>:&lt;/label&gt;
+  &lt;input type="text" id="username-id" name="username"&gt;
+
+  &lt;button type="submit"&gt;<span data-lang-key="visSubmit">Submit</span>&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;fieldset&gt;</span><span class="tag-description" data-lang-key="descFieldset">Group related form elements</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-fieldset"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-fieldset" role="region"><pre><code>&lt;form&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;<span data-lang-key="visPersonalInfo">Personal Information</span>:&lt;/legend&gt;
+    &lt;label for="fname"&gt;<span data-lang-key="visFirstName">First name</span>:&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" id="fname" name="fname"&gt;&lt;br&gt;
+    &lt;label for="lname"&gt;<span data-lang-key="visLastName">Last name</span>:&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" id="lname" name="lname"&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;legend&gt;</span><span class="tag-description" data-lang-key="descLegend">Caption for &lt;fieldset&gt;</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;label&gt;</span><span class="tag-description" data-lang-key="descLabel">Label for form control (use `for` attribute)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-label"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-label" role="region"><pre><code>&lt;!-- <span data-lang-key="visLabelFor">Connects label to input via id</span> --&gt;
+&lt;label for="email-input"&gt;<span data-lang-key="visEmail">Email Address</span>:&lt;/label&gt;
+&lt;input type="email" id="email-input" name="email"&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;input&gt;</span><span class="tag-description" data-lang-key="descInput">Input field (many types)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-input"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-input" role="region"><pre><code>&lt;!-- <span data-lang-key="visTextInput">Text Input</span> --&gt;
+&lt;label for="name-in"&gt;<span data-lang-key="visName">Name</span>:&lt;/label&gt;
+&lt;input type="text" id="name-in" name="name"&gt;&lt;br&gt;
+
+&lt;!-- <span data-lang-key="visRadioButton">Radio Button</span> --&gt;
+&lt;input type="radio" id="html-radio" name="fav_language" value="HTML"&gt;
+&lt;label for="html-radio"&gt;HTML&lt;/label&gt;&lt;br&gt;
+&lt;input type="radio" id="css-radio" name="fav_language" value="CSS"&gt;
+&lt;label for="css-radio"&gt;CSS&lt;/label&gt;&lt;br&gt;
+
+&lt;!-- <span data-lang-key="visCheckbox">Checkbox</span> --&gt;
+&lt;input type="checkbox" id="vehicle1-check" name="vehicle1" value="Bike"&gt;
+&lt;label for="vehicle1-check"&gt; <span data-lang-key="visIHaveBike">I have a bike</span>&lt;/label&gt;&lt;br&gt;
+
+&lt;!-- <span data-lang-key="visSubmitButtonInput">Submit Button (using input)</span> --&gt;
+&lt;input type="submit" value="<span data-lang-key="visSubmit">Submit</span>"&gt;
+
+&lt;!-- <span data-lang-key="visOtherTypes">Other types: password, email, number, date, etc.</span> --&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;select&gt;</span><span class="tag-description" data-lang-key="descSelect">Dropdown list</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-select"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-select" role="region"><pre><code>&lt;label for="cars-select"&gt;<span data-lang-key="visChooseCar">Choose a car</span>:&lt;/label&gt;
+&lt;select id="cars-select" name="cars"&gt;
+  &lt;optgroup label="Swedish Cars"&gt;
+    &lt;option value="volvo"&gt;Volvo&lt;/option&gt;
+    &lt;option value="saab"&gt;Saab&lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;optgroup label="German Cars"&gt;
+    &lt;option value="mercedes"&gt;Mercedes&lt;/option&gt;
+    &lt;option value="audi" selected&gt;Audi&lt;/option&gt; &lt;!-- <span data-lang-key="visSelected">Selected</span> --&gt;
+  &lt;/optgroup&gt;
+&lt;/select&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;optgroup&gt;</span><span class="tag-description" data-lang-key="descOptgroup">Group of options in dropdown</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;option&gt;</span><span class="tag-description" data-lang-key="descOption">An option in a dropdown</span></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;textarea&gt;</span><span class="tag-description" data-lang-key="descTextarea">Multi-line text input</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-textarea"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-textarea" role="region"><pre><code>&lt;label for="message-area"&gt;<span data-lang-key="visMessage">Message</span>:&lt;/label&gt;&lt;br&gt;
+&lt;textarea id="message-area" name="message" rows="5" cols="30" placeholder="<span data-lang-key="visEnterTextHere">Enter text here...</span>"&gt;&lt;/textarea&gt;</code></pre></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">&lt;button&gt;</span><span class="tag-description" data-lang-key="descButton">Clickable button (preferred over input type=button/submit)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-button"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-button" role="region"><pre><code>&lt;!-- <span data-lang-key="visStandardButton">Standard Button (requires JS for action)</span> --&gt;
+&lt;button type="button" onclick="alert('Hello!')"&gt;<span data-lang-key="visClickMe">Click Me</span>&lt;/button&gt;
+
+&lt;!-- <span data-lang-key="visSubmitButton">Submit Button (submits parent form)</span> --&gt;
+&lt;button type="submit"&gt;<span data-lang-key="visSubmitForm">Submit Form</span>&lt;/button&gt;
+
+&lt;!-- <span data-lang-key="visResetButton">Reset Button (resets parent form)</span> --&gt;
+&lt;button type="reset"&gt;<span data-lang-key="visResetForm">Reset Form</span>&lt;/button&gt;</code></pre></div>
+                     </div>
+                 </div>
+             </section>
+
+            <!-- Card: Form Events (JS) -->
+            <section id="form-events" class="card">
+                 <h2 data-lang-key="cardTitleEvents"><i class="fas fa-bolt"></i>Form Events (JavaScript)</h2>
+                 <div class="tag-list">
+                    <p style="color: var(--muted-text-color); margin-bottom: 15px; font-size: 0.9em;" data-lang-key="visEventsDesc">
+                       These are JavaScript event handlers that can be attached to form elements to react to user interactions. Modern practice favors adding listeners via JavaScript (e.g., `element.addEventListener('change', ...)`), rather than inline attributes shown here for brevity.
+                    </p>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">onblur</span><span class="tag-description" data-lang-key="descOnBlur">When element loses focus</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-onblur"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-onblur" role="region"><pre><code>&lt;input type="text" onblur="myFunction()"&gt;</code></pre><p><code class="html-js-event">myFunction()</code> <span data-lang-key="visRunsWhen">runs when the user clicks outside the input field.</span></p></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">onchange</span><span class="tag-description" data-lang-key="descOnChange">When element's value changes (and loses focus for text/textarea)</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-onchange"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-onchange" role="region"><pre><code>&lt;select onchange="showSelection(this.value)"&gt;...&lt;/select&gt;</code></pre><p><code class="html-js-event">showSelection()</code> <span data-lang-key="visRunsWhenSelect">runs when the user selects a different option in the dropdown.</span></p></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">onfocus</span><span class="tag-description" data-lang-key="descOnFocus">When element gains focus</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-onfocus"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-onfocus" role="region"><pre><code>&lt;input type="text" onfocus="highlightField(this)"&gt;</code></pre><p><code class="html-js-event">highlightField()</code> <span data-lang-key="visRunsWhenFocus">runs when the user clicks inside the input field.</span></p></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">onreset</span><span class="tag-description" data-lang-key="descOnReset">When form is reset</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-onreset"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-onreset" role="region"><pre><code>&lt;form onreset="confirmReset()"&gt;
+  ...
+  &lt;button type="reset"&gt;<span data-lang-key="visResetForm">Reset Form</span>&lt;/button&gt;
+&lt;/form&gt;</code></pre><p><code class="html-js-event">confirmReset()</code> <span data-lang-key="visRunsWhenReset">runs when the reset button is clicked.</span></p></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">onselect</span><span class="tag-description" data-lang-key="descOnSelect">When text is selected in input/textarea</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-onselect"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-onselect" role="region"><pre><code>&lt;input type="text" onselect="logSelection()" value="<span data-lang-key="visSomeText">Some text</span>"&gt;</code></pre><p><code class="html-js-event">logSelection()</code> <span data-lang-key="visRunsWhenSelectText">runs when the user selects part of the text in this field.</span></p></div>
+                     </div>
+                     <div class="tag-item">
+                        <div class="tag-info"><span class="tag-name">onsubmit</span><span class="tag-description" data-lang-key="descOnSubmit">When form is submitted</span><button class="toggle-example" aria-expanded="false" aria-controls="ex-onsubmit"><span data-lang-key="btnShow">Show</span> Example <i class="fas fa-chevron-down"></i></button></div>
+                        <div class="example" id="ex-onsubmit" role="region"><pre><code>&lt;form onsubmit="return validateForm()"&gt;
+  ...
+  &lt;button type="submit"&gt;<span data-lang-key="visSubmitForm">Submit Form</span>&lt;/button&gt;
+&lt;/form&gt;</code></pre><p><code class="html-js-event">validateForm()</code> <span data-lang-key="visRunsBeforeSubmit">runs before the form submits. If it returns</span> <code>false</code>, <span data-lang-key="visSubmissionStopped">submission is stopped.</span></p></div>
+                     </div>
+                 </div>
+            </section>
+
+        </div> <!-- /.grid-container -->
+    </main> <!-- /main -->
+
+    <!-- Settings Modal Structure -->
+    <div id="settings-modal" class="settings-modal">
+        <div class="settings-modal-content">
+            <button id="close-settings-btn" class="close-settings-btn" aria-label="Close Settings">&times;</button>
+            <h2 data-lang-key="settingsTitle">Settings</h2>
+
+            <!-- Theme Toggle -->
+            <div class="setting-item">
+                <label for="theme-toggle" data-lang-key="settingsTheme">Theme</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                 <span class="theme-label" data-lang-key="settingsThemeLabel">Light Mode</span>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="setting-item">
+                <label for="language-select" data-lang-key="settingsLanguage">Language</label>
+                <select id="language-select" class="language-select">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी (Hindi)</option>
+                </select>
+            </div>
+
+            <!-- About Section -->
+            <div class="setting-item about-section">
+                <label data-lang-key="settingsAbout">About</label>
+                <p>
+                    <strong data-lang-key="settingsCreatedBy">Created by:</strong> Movie Time With AI 🍿
+                </p>
+                 <p>
+                   <a href="https://youtube.com/@movietimewithai?si=JVINGxUeWPJCTgAJ" target="_blank" rel="noopener noreferrer">
+                       <i class="fab fa-youtube"></i> <span data-lang-key="settingsYoutube">Visit YouTube Channel</span>
+                   </a>
+                </p>
+                <p data-lang-key="settingsDesc">This interactive cheatsheet helps you learn and reference HTML tags quickly.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer data-lang-key="footerText">
+        Interactive HTML Cheatsheet | A modern way to learn
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Language Data ---
+            const translations = {
+                en: {
+                    title: "Interactive HTML Cheatsheet",
+                    headerTitle: "Interactive HTML Cheatsheet",
+                    headerSubtitle: "Learn HTML in a modern, interactive, and visual way Movie Time With AI 🍿",
+                    cardTitleOutline: "Document Outline",
+                    descDoctype: "Declares the HTML version (this is HTML5)",
+                    descHtml: "Root element of the entire HTML document",
+                    visHtml: "This encloses the entire page.",
+                    visHead: "... meta info",
+                    visBody: "... page content",
+                    descHead: "Contains meta-information about the page (not visible)",
+                    visHeadDesc: "Includes title, stylesheet links, scripts, etc.",
+                    visPageTitle: "Page Title",
+                    descBody: "Contains the visible content of the page",
+                    visBodyDesc: "All visible elements (headings, paragraphs, images, links, etc.) go here.",
+                    visMainHeading: "Main Heading",
+                    visAParagraph: "This is a paragraph.",
+                    visDescription: "Description",
+                    cardTitleStructure: "Document Structure",
+                    descH1H6: "Headings (most to least important)",
+                    visLevel1: "Level 1 Heading",
+                    visLevel2: "Level 2 Heading",
+                    visLevel3: "Level 3 Heading",
+                    visUpToH6: "up to h6",
+                    visStructureHelp: "Helps structure the content.",
+                    descDiv: "A block-level section (division)",
+                    visDivDesc: "Generic container for styling or grouping.",
+                    visSectionTitle: "Section Title",
+                    visSomeContent: "Some content.",
+                    descSpan: "An inline section",
+                    visSpanDesc: "Used to style a part of text.",
+                    visThisIs: "This is",
+                    visRed: "red",
+                    visText: "text",
+                    descP: "Paragraph",
+                    visParaText: "This is a paragraph of text. Browsers usually add some vertical space before and after paragraphs.",
+                    descBr: "Line break (new line)",
+                    visBrDesc: "Forces a line break.",
+                    visFirstLine: "First line.",
+                    visSecondLine: "Second line.",
+                    descHr: "Horizontal rule (thematic break)",
+                    visHrDesc: "Represents a thematic break in content, often rendered as a horizontal line.",
+                    visFirstTopic: "First topic.",
+                    visSecondTopic: "Second topic.",
+                    cardTitleTextMarkup: "Text Markup",
+                    descStrong: "Strong importance (usually bold)",
+                    visImportantText: "Important Text",
+                    descEm: "Emphasis (usually italic)",
+                    visEmphasizedText: "Emphasized Text",
+                    descBlockquote: "Long quotation (indented)",
+                    visLongQuote: "This is a long quotation from another source...",
+                    descQ: "Short inline quotation (adds quotes)",
+                    visHeSaid: "He said",
+                    descAbbr: "Abbreviation",
+                    descAcronym: "(Obsolete - use <abbr>)",
+                    descAddress: "Contact information",
+                    visWrittenBy: "Written by",
+                    visVisitUs: "Visit us at",
+                    descPre: "Preformatted text (preserves spaces/breaks)",
+                    visPreText: "Text in a pre element\nis displayed in a fixed-width\nfont, and it preserves\nboth      spaces and\nline breaks.",
+                    descDfn: "Definition term",
+                    visDfnText: "The",
+                    visDfnText2: "is a system...",
+                    descCode: "Piece of computer code",
+                    visCodeText: "The",
+                    visCodeText2: "function...",
+                    descCite: "Title of a work (book, film, etc.)",
+                    visByEdvard: "by Edvard Munch. Painted in 1893.",
+                    descDel: "Deleted text (strike-through)",
+                    visMyFavColor: "My favorite color is",
+                    visBlue: "blue",
+                    descIns: "Inserted text (underline)",
+                    descSub: "Subscript text",
+                    descSup: "Superscript text",
+                    descBdo: "Text direction override",
+                    visForRTL: "For right-to-left text",
+                    visRTLText: "This text will go right-to-left",
+                    cardTitleLists: "Lists",
+                    descUl: "Unordered list (bullets)",
+                    visCoffee: "Coffee",
+                    visTea: "Tea",
+                    visMilk: "Milk",
+                    descOl: "Ordered list (numbers)",
+                    visFirstItem: "First item",
+                    visSecondItem: "Second item",
+                    visThirdItem: "Third item",
+                    descLi: "List item",
+                    descDl: "Definition list",
+                    visBlackHot: "black hot drink",
+                    visWhiteCold: "white cold drink",
+                    descDt: "Definition term",
+                    descDd: "Term description",
+                    cardTitleTables: "Tables",
+                    descTable: "Table container",
+                    visTableDesc: "Used to create tabular data.",
+                    visOptional: "Optional",
+                    visRemoveBorderAttr: "Removed border attribute, use CSS instead",
+                    visMonthlySavings: "Monthly Savings",
+                    visMonth: "Month",
+                    visSavings: "Savings",
+                    visJanuary: "January",
+                    visFebruary: "February",
+                    visTotal: "Total",
+                    descCaption: "Table caption",
+                    descThead: "Table header group",
+                    descTbody: "Table body group",
+                    descTfoot: "Table footer group",
+                    descTr: "Table row",
+                    descTh: "Table header cell (use `scope` attribute)",
+                    descTd: "Table data cell",
+                    descColgroup: "Group of columns",
+                    descCol: "Table column properties",
+                    cardTitleForms: "Form Elements",
+                    descForm: "Container for user input",
+                    visFormElementsHere: "Form elements go here",
+                    visUsername: "Username",
+                    visSubmit: "Submit",
+                    descFieldset: "Group related form elements",
+                    visPersonalInfo: "Personal Information",
+                    visFirstName: "First name",
+                    visLastName: "Last name",
+                    descLegend: "Caption for <fieldset>",
+                    descLabel: "Label for form control (use `for` attribute)",
+                    visLabelFor: "Connects label to input via id",
+                    visEmail: "Email Address",
+                    descInput: "Input field (many types)",
+                    visTextInput: "Text Input",
+                    visName: "Name",
+                    visRadioButton: "Radio Button",
+                    visCheckbox: "Checkbox",
+                    visIHaveBike: "I have a bike",
+                    visSubmitButtonInput: "Submit Button (using input)",
+                    visOtherTypes: "Other types: password, email, number, date, etc.",
+                    descSelect: "Dropdown list",
+                    visChooseCar: "Choose a car",
+                    visSelected: "Selected",
+                    descOptgroup: "Group of options in dropdown",
+                    descOption: "An option in a dropdown",
+                    descTextarea: "Multi-line text input",
+                    visMessage: "Message",
+                    visEnterTextHere: "Enter text here...",
+                    descButton: "Clickable button (preferred over input type=button/submit)",
+                    visStandardButton: "Standard Button (requires JS for action)",
+                    visClickMe: "Click Me",
+                    visSubmitButton: "Submit Button (submits parent form)",
+                    visSubmitForm: "Submit Form",
+                    visResetButton: "Reset Button (resets parent form)",
+                    visResetForm: "Reset Form",
+                    cardTitleEvents: "Form Events (JavaScript)",
+                    visEventsDesc: "These are JavaScript event handlers that can be attached to form elements to react to user interactions. Modern practice favors adding listeners via JavaScript (e.g., `element.addEventListener('change', ...)`), rather than inline attributes shown here for brevity.",
+                    descOnBlur: "When element loses focus",
+                    visRunsWhen: "runs when the user clicks outside the input field.",
+                    descOnChange: "When element's value changes (and loses focus for text/textarea)",
+                    visRunsWhenSelect: "runs when the user selects a different option in the dropdown.",
+                    descOnFocus: "When element gains focus",
+                    visRunsWhenFocus: "runs when the user clicks inside the input field.",
+                    descOnReset: "When form is reset",
+                    visRunsWhenReset: "runs when the reset button is clicked.",
+                    descOnSelect: "When text is selected in input/textarea",
+                    visSomeText: "Some text",
+                    visRunsWhenSelectText: "runs when the user selects part of the text in this field.",
+                    descOnSubmit: "When form is submitted",
+                    visRunsBeforeSubmit: "runs before the form submits. If it returns",
+                    visSubmissionStopped: "submission is stopped.",
+                    settingsTitle: "Settings",
+                    settingsTheme: "Theme",
+                    settingsThemeLabel: "Light Mode",
+                    settingsLanguage: "Language",
+                    settingsAbout: "About",
+                    settingsCreatedBy: "Created by:",
+                    settingsYoutube: "Visit YouTube Channel",
+                    settingsDesc: "This interactive cheatsheet helps you learn and reference HTML tags quickly.",
+                    footerText: "Interactive HTML Cheatsheet | A modern way to learn",
+                    btnShow: "Show",
+                    btnHide: "Hide"
+                },
+                hi: {
+                    title: "इंटरैक्टिव HTML चीटशीट",
+                    headerTitle: "इंटरैक्टिव HTML चीटशीट",
+                    headerSubtitle: "आधुनिक, इंटरैक्टिव और विज़ुअल तरीके से HTML सीखें Movie Time With AI 🍿",
+                    cardTitleOutline: "डॉक्यूमेंट आउटलाइन",
+                    descDoctype: "HTML संस्करण बताता है (यह HTML5 है)",
+                    descHtml: "पूरे HTML डॉक्यूमेंट का रूट एलिमेंट",
+                    visHtml: "यह पूरे पेज को घेरता है।",
+                    visHead: "... मेटा जानकारी",
+                    visBody: "... पेज कंटेंट",
+                    descHead: "पेज के बारे में मेटा जानकारी (दिखाई नहीं देती)",
+                    visHeadDesc: "इसमें टाइटल, स्टाइलशीट लिंक, स्क्रिप्ट्स आदि होते हैं।",
+                    visPageTitle: "पेज का टाइटल",
+                    descBody: "पेज का दिखने वाला कंटेंट",
+                    visBodyDesc: "सभी दिखने वाले एलिमेंट्स (हेडिंग्स, पैराग्राफ, इमेजेज, लिंक्स आदि) यहाँ आते हैं।",
+                    visMainHeading: "मुख्य हेडिंग",
+                    visAParagraph: "यह एक पैराग्राफ है।",
+                    visDescription: "विवरण",
+                    cardTitleStructure: "डॉक्यूमेंट स्ट्रक्चर",
+                    descH1H6: "हेडिंग्स (सबसे महत्वपूर्ण से कम महत्वपूर्ण)",
+                    visLevel1: "स्तर 1 हेडिंग",
+                    visLevel2: "स्तर 2 हेडिंग",
+                    visLevel3: "स्तर 3 हेडिंग",
+                    visUpToH6: "h6 तक",
+                    visStructureHelp: "यह कंटेंट को संरचना देने में मदद करता है।",
+                    descDiv: "एक ब्लॉक-लेवल सेक्शन (डिवीजन)",
+                    visDivDesc: "स्टाइलिंग या ग्रुपिंग के लिए एक सामान्य कंटेनर।",
+                    visSectionTitle: "सेक्शन टाइटल",
+                    visSomeContent: "कुछ कंटेंट।",
+                    descSpan: "एक इनलाइन सेक्शन",
+                    visSpanDesc: "टेक्स्ट के एक हिस्से को स्टाइल करने के लिए इस्तेमाल किया जाता है।",
+                    visThisIs: "यह",
+                    visRed: "लाल",
+                    visText: "टेक्स्ट है।",
+                    descP: "पैराग्राफ",
+                    visParaText: "यह टेक्स्ट का एक पैराग्राफ है। ब्राउज़र आमतौर पर पैराग्राफ के पहले और बाद में कुछ वर्टिकल स्पेस जोड़ते हैं।",
+                    descBr: "लाइन ब्रेक (नई लाइन)",
+                    visBrDesc: "एक नई लाइन शुरू करने के लिए।",
+                    visFirstLine: "पहली लाइन।",
+                    visSecondLine: "दूसरी लाइन।",
+                    descHr: "हॉरिजॉन्टल रूल (विषयगत ब्रेक)",
+                    visHrDesc: "कंटेंट में एक विषयगत ब्रेक को दर्शाता है, आमतौर पर एक हॉरिजॉन्टल लाइन के रूप में प्रस्तुत किया जाता है।",
+                    visFirstTopic: "पहला विषय।",
+                    visSecondTopic: "दूसरा विषय।",
+                    cardTitleTextMarkup: "टेक्स्ट मार्कअप",
+                    descStrong: "मजबूत महत्व (आमतौर पर बोल्ड)",
+                    visImportantText: "महत्वपूर्ण टेक्स्ट",
+                    descEm: "जोर (आमतौर पर इटैलिक)",
+                    visEmphasizedText: "जोर दिया गया टेक्स्ट",
+                    descBlockquote: "लंबा कोटेशन (इंडेंटेड)",
+                    visLongQuote: "यह किसी अन्य स्रोत से एक लंबा कोटेशन है...",
+                    descQ: "छोटा इनलाइन कोटेशन (कोटेशन मार्क्स जोड़ता है)",
+                    visHeSaid: "उसने कहा",
+                    descAbbr: "संक्षिप्त नाम (एब्रिविएशन)",
+                    descAcronym: "(अप्रचलित - <abbr> का उपयोग करें)",
+                    descAddress: "संपर्क जानकारी",
+                    visWrittenBy: "द्वारा लिखा गया",
+                    visVisitUs: "हमें यहाँ मिलें",
+                    descPre: "प्री-फॉर्मेटेड टेक्स्ट (स्पेस और लाइन ब्रेक बनाए रखता है)",
+                    visPreText: "प्री एलिमेंट में टेक्स्ट\nएक फिक्स्ड-विड्थ फॉन्ट में\nदिखाया जाता है, और यह\nस्पेस      और\nलाइन ब्रेक दोनों को बनाए रखता है।",
+                     descDfn: "परिभाषा शब्द",
+                     visDfnText: "एक",
+                     visDfnText2: "एक प्रणाली है...",
+                    descCode: "कंप्यूटर कोड का टुकड़ा",
+                    visCodeText: "यह",
+                    visCodeText2: "फंक्शन...",
+                    descCite: "किसी काम का शीर्षक (जैसे किताब, फिल्म)",
+                    visByEdvard: "एडवर्ड मंच द्वारा। 1893 में चित्रित।",
+                    descDel: "डिलीट किया गया टेक्स्ट (स्ट्राइक-थ्रू)",
+                    visMyFavColor: "मेरा पसंदीदा रंग",
+                    visBlue: "नीला",
+                    descIns: "इन्सर्ट किया गया टेक्स्ट (अंडरलाइन)",
+                    descSub: "सबस्क्रिप्ट टेक्स्ट",
+                    descSup: "सुपरस्क्रिप्ट टेक्स्ट",
+                    descBdo: "टेक्स्ट डायरेक्शन ओवरराइड",
+                    visForRTL: "राइट-टू-लेफ्ट टेक्स्ट के लिए",
+                    visRTLText: "यह टेक्स्ट राइट-टू-लेफ्ट होगा",
+                    cardTitleLists: "लिस्ट्स",
+                    descUl: "अनऑर्डर्ड लिस्ट (बुलेट पॉइंट्स)",
+                    visCoffee: "कॉफ़ी",
+                    visTea: "चाय",
+                    visMilk: "दूध",
+                    descOl: "ऑर्डर्ड लिस्ट (नंबर)",
+                    visFirstItem: "पहला आइटम",
+                    visSecondItem: "दूसरा आइटम",
+                    visThirdItem: "तीसरा आइटम",
+                    descLi: "लिस्ट आइटम",
+                    descDl: "डेफिनिशन लिस्ट",
+                    visBlackHot: "ब्लैक हॉट ड्रिंक",
+                    visWhiteCold: "व्हाइट कोल्ड ड्रिंक",
+                    descDt: "डेफिनिशन टर्म",
+                    descDd: "टर्म डिस्क्रिप्शन",
+                    cardTitleTables: "टेबल्स",
+                    descTable: "टेबल कंटेनर",
+                    visTableDesc: "टेबुलर डेटा बनाने के लिए उपयोग किया जाता है।",
+                    visOptional: "वैकल्पिक",
+                    visRemoveBorderAttr: "बॉर्डर एट्रिब्यूट हटा दिया गया, बजाय इसके CSS का उपयोग करें",
+                    visMonthlySavings: "मंथली सेविंग्स",
+                    visMonth: "महीना",
+                    visSavings: "सेविंग्स",
+                    visJanuary: "जनवरी",
+                    visFebruary: "फरवरी",
+                    visTotal: "कुल",
+                    descCaption: "टेबल कैप्शन",
+                    descThead: "टेबल हेडर ग्रुप",
+                    descTbody: "टेबल बॉडी ग्रुप",
+                    descTfoot: "टेबल फुटर ग्रुप",
+                    descTr: "टेबल रो",
+                    descTh: "टेबल हेडर सेल (`scope` एट्रिब्यूट का उपयोग करें)",
+                    descTd: "टेबल डेटा सेल",
+                    descColgroup: "कॉलम का ग्रुप",
+                    descCol: "टेबल कॉलम गुण",
+                    cardTitleForms: "फॉर्म एलिमेंट्स",
+                    descForm: "यूजर इनपुट के लिए कंटेनर",
+                    visFormElementsHere: "फॉर्म एलिमेंट्स यहाँ आते हैं",
+                    visUsername: "यूजरनेम",
+                    visSubmit: "सबमिट करें",
+                    descFieldset: "संबंधित फॉर्म एलिमेंट्स का ग्रुप",
+                    visPersonalInfo: "व्यक्तिगत जानकारी",
+                    visFirstName: "पहला नाम",
+                    visLastName: "अंतिम नाम",
+                    descLegend: "<fieldset> के लिए कैप्शन",
+                    descLabel: "फॉर्म कंट्रोल के लिए लेबल (`for` एट्रिब्यूट का उपयोग करें)",
+                    visLabelFor: "लेबल को आईडी के माध्यम से इनपुट से जोड़ता है",
+                    visEmail: "ईमेल एड्रेस",
+                    descInput: "इनपुट फील्ड (कई प्रकार)",
+                    visTextInput: "टेक्स्ट इनपुट",
+                    visName: "नाम",
+                    visRadioButton: "रेडियो बटन",
+                    visCheckbox: "चेकबॉक्स",
+                    visIHaveBike: "मेरे पास बाइक है",
+                    visSubmitButtonInput: "सबमिट बटन (इनपुट का उपयोग करके)",
+                    visOtherTypes: "अन्य प्रकार: पासवर्ड, ईमेल, नंबर, डेट, आदि।",
+                    descSelect: "ड्रॉपडाउन लिस्ट",
+                    visChooseCar: "कार चुनें",
+                    visSelected: "चयनित",
+                    descOptgroup: "ड्रॉपडाउन में विकल्पों का ग्रुप",
+                    descOption: "ड्रॉपडाउन में एक विकल्प",
+                    descTextarea: "मल्टी-लाइन टेक्स्ट इनपुट",
+                    visMessage: "संदेश",
+                    visEnterTextHere: "यहाँ टेक्स्ट दर्ज करें...",
+                    descButton: "क्लिक करने योग्य बटन (इनपुट टाइप=बटन/सबमिट से बेहतर)",
+                    visStandardButton: "मानक बटन (कार्रवाई के लिए JS आवश्यक)",
+                    visClickMe: "क्लिक करें",
+                    visSubmitButton: "सबमिट बटन (पेरेंट फॉर्म सबमिट करता है)",
+                    visSubmitForm: "फॉर्म सबमिट करें",
+                    visResetButton: "रीसेट बटन (पेरेंट फॉर्म रीसेट करता है)",
+                    visResetForm: "फॉर्म रीसेट करें",
+                    cardTitleEvents: "फॉर्म इवेंट्स (जावास्क्रिप्ट)",
+                    visEventsDesc: "ये जावास्क्रिप्ट इवेंट हैंडलर हैं जिन्हें यूजर इंटरैक्शन पर प्रतिक्रिया करने के लिए फॉर्म एलिमेंट्स से जोड़ा जा सकता है। आधुनिक अभ्यास जावास्क्रिप्ट के माध्यम से लिस्नर जोड़ने का पक्षधर है (जैसे, `element.addEventListener('change', ...)`), बजाय इनलाइन एट्रिब्यूट्स के जो यहाँ संक्षिप्तता के लिए दिखाए गए हैं।",
+                    descOnBlur: "जब एलिमेंट से फोकस हटता है",
+                    visRunsWhen: "चलता है जब यूजर इनपुट फील्ड से बाहर क्लिक करता है।",
+                    descOnChange: "जब एलिमेंट का मान बदलता है (और टेक्स्ट/टेक्स्टएरिया के लिए फोकस हटता है)",
+                    visRunsWhenSelect: "चलता है जब यूजर ड्रॉपडाउन में कोई अलग विकल्प चुनता है।",
+                    descOnFocus: "जब एलिमेंट पर फोकस आता है",
+                    visRunsWhenFocus: "चलता है जब यूजर इनपुट फील्ड में क्लिक करता है।",
+                    descOnReset: "जब फॉर्म रीसेट होता है",
+                    visRunsWhenReset: "चलता है जब रीसेट बटन दबाया जाता है।",
+                    descOnSelect: "जब इनपुट/टेक्स्टएरिया में टेक्स्ट चुना जाता है",
+                    visSomeText: "कुछ टेक्स्ट",
+                    visRunsWhenSelectText: "चलता है जब यूजर इस फील्ड में टेक्स्ट का हिस्सा चुनता है।",
+                    descOnSubmit: "जब फॉर्म सबमिट होता है",
+                    visRunsBeforeSubmit: "फॉर्म सबमिट होने से पहले चलता है। यदि यह",
+                    visSubmissionStopped: "सबमिशन रुक जाता है।",
+                    settingsTitle: "सेटिंग्स",
+                    settingsTheme: "थीम",
+                    settingsThemeLabel: "लाइट मोड",
+                    settingsLanguage: "भाषा",
+                    settingsAbout: "बारे में",
+                    settingsCreatedBy: "द्वारा बनाया गया:",
+                    settingsYoutube: "यूट्यूब चैनल पर जाएँ",
+                    settingsDesc: "यह इंटरैक्टिव चीटशीट आपको HTML टैग्स को जल्दी से सीखने और संदर्भित करने में मदद करती है।",
+                    footerText: "इंटरैक्टिव HTML चीटशीट | सीखने का एक आधुनिक तरीका",
+                    btnShow: "दिखाएँ",
+                    btnHide: "छिपाएँ"
+                }
+            };
+
+            // --- Elements ---
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettingsBtn = document.getElementById('close-settings-btn');
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeLabel = document.querySelector('.theme-label');
+            const languageSelect = document.getElementById('language-select');
+            const body = document.body;
+            const toggleExampleButtons = document.querySelectorAll('.toggle-example');
+
+            // --- Settings ---
+            let currentTheme = localStorage.getItem('theme') || 'dark';
+            let currentLang = localStorage.getItem('language') || 'en'; // Default to English
+
+            // --- Functions ---
+
+            // Apply theme based on currentTheme variable
+            function applyTheme() {
+                if (currentTheme === 'light') {
+                    body.classList.add('light-theme');
+                    themeToggle.checked = true;
+                    if(themeLabel) themeLabel.textContent = translations[currentLang]?.settingsThemeLabel.replace("Light", "Dark") || "Dark Mode"; // Adjust label based on language
+                } else {
+                    body.classList.remove('light-theme');
+                    themeToggle.checked = false;
+                     if(themeLabel) themeLabel.textContent = translations[currentLang]?.settingsThemeLabel || "Light Mode"; // Adjust label based on language
+                }
+            }
+
+            // Apply language based on currentLang variable
+            function applyLanguage() {
+                const langData = translations[currentLang];
+                if (!langData) return; // Language not found
+
+                document.documentElement.lang = currentLang; // Set html lang attribute
+
+                document.querySelectorAll('[data-lang-key]').forEach(el => {
+                    const key = el.getAttribute('data-lang-key');
+                    if (langData[key]) {
+                        // Handle buttons specifically to update only the text part
+                        if (el.classList.contains('toggle-example')) {
+                            const textSpan = el.querySelector('span');
+                            if (textSpan) {
+                                const currentTextKey = el.classList.contains('active') ? 'btnHide' : 'btnShow';
+                                textSpan.textContent = langData[currentTextKey] || (el.classList.contains('active') ? 'Hide' : 'Show');
+                            }
+                        } else if (el.classList.contains('theme-label')) {
+                             el.textContent = currentTheme === 'light' ? langData['settingsThemeLabel']?.replace("Light", "Dark") || "Dark Mode" : langData['settingsThemeLabel'] || "Light Mode";
+                        }
+                         else {
+                            el.textContent = langData[key];
+                        }
+                    }
+                });
+
+                 // Update placeholder text (if any)
+                 document.querySelectorAll('[placeholder]').forEach(el => {
+                     const key = el.getAttribute('data-lang-key'); // Assuming placeholder also uses data-lang-key
+                     if (key && langData[key]) {
+                         el.placeholder = langData[key];
+                     }
+                 });
+
+                // Update ARIA labels that might change
+                settingsBtn.setAttribute('aria-label', currentLang === 'hi' ? 'सेटिंग्स खोलें' : 'Open Settings');
+                closeSettingsBtn.setAttribute('aria-label', currentLang === 'hi' ? 'सेटिंग्स बंद करें' : 'Close Settings');
+
+                // Update toggle button text based on state and language
+                 updateAllToggleButtonsText();
+
+                 // Update theme toggle label based on language and theme
+                 updateThemeLabelText();
+            }
+
+             // Function to update the text of a single toggle button
+            function updateToggleButtonText(button, lang) {
+                const textSpan = button.querySelector('span');
+                if (textSpan) {
+                    const isActive = button.classList.contains('active');
+                    const textKey = isActive ? 'btnHide' : 'btnShow';
+                    textSpan.textContent = translations[lang]?.[textKey] || (isActive ? 'Hide' : 'Show');
+                }
+            }
+
+            // Function to update all toggle buttons' text
+            function updateAllToggleButtonsText() {
+                toggleExampleButtons.forEach(button => {
+                    updateToggleButtonText(button, currentLang);
+                });
+            }
+
+             // Function to update the theme toggle label
+             function updateThemeLabelText() {
+                 const langData = translations[currentLang] || translations['en']; // Fallback to English
+                 if (themeLabel) {
+                     const baseLabel = langData.settingsThemeLabel || "Light Mode";
+                     themeLabel.textContent = currentTheme === 'light' ? baseLabel.replace("Light", "Dark").replace("लाइट", "डार्क") : baseLabel;
+                 }
+             }
+
+
+            // Toggle example visibility
+            function toggleExample(button) {
+                 const exampleDivId = button.getAttribute('aria-controls');
+                 const exampleDiv = document.getElementById(exampleDivId);
+
+                 if (!exampleDiv) return;
+
+                 const isVisible = exampleDiv.classList.contains('visible');
+
+                 if (isVisible) {
+                     exampleDiv.classList.remove('visible');
+                     button.classList.remove('active');
+                     button.setAttribute('aria-expanded', 'false');
+                 } else {
+                     exampleDiv.classList.add('visible');
+                     button.classList.add('active');
+                     button.setAttribute('aria-expanded', 'true');
+                 }
+                 // Update button text after state change
+                 updateToggleButtonText(button, currentLang);
+            }
+
+            // Open Settings Modal
+            function openSettings() {
+                if (settingsModal) settingsModal.style.display = 'block';
+            }
+
+            // Close Settings Modal
+            function closeSettings() {
+                 if (settingsModal) settingsModal.style.display = 'none';
+            }
+
+             // Basic Syntax Highlighting (Refined)
+            function highlightSyntax(codeBlock) {
+                 let html = codeBlock.innerHTML;
+
+                 // Preserve existing highlights first if re-running
+                 html = html.replace(/<span class="[^"]+">(.+?)<\/span>/g, '$1');
+
+                 // Escape HTML entities within the code first to avoid conflicts
+                 html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+                 // Comments
+                 html = html.replace(/(&lt;!--.*?--&gt;)/gs, '<span class="html-comment">$1</span>');
+
+                 // Tags (opening, closing, self-closing) - careful not to match comments
+                 html = html.replace(/(&lt;\/?)([a-zA-Z0-9\-]+)/g, (match, p1, p2) => {
+                     // Avoid highlighting inside comments
+                     if (match.includes('span class="html-comment"')) return match;
+                     return `<span class="html-tag-symbol">${p1}</span><span class="html-tag">${p2}</span>`;
+                 });
+
+                 // Attributes (name="value")
+                 html = html.replace(/ ([a-zA-Z\-]+)=(".*?")/g, (match, p1, p2) => {
+                     if (match.includes('span class="html-comment"')) return match;
+                     // Highlight inline JS events differently
+                     if (p1.startsWith('on')) {
+                        return ` <span class="html-attr-name">${p1}</span>=<span class="html-js-event">${p2}</span>`;
+                     }
+                     return ` <span class="html-attr-name">${p1}</span>=<span class="html-attr-value">${p2}</span>`;
+                 });
+
+                 // Tag closing symbols (> /&gt;) - careful not to match comments
+                  html = html.replace(/(\/?&gt;)/g, (match, p1) => {
+                     if (match.includes('span class="html-comment"')) return match;
+                     return `<span class="html-tag-symbol">${p1}</span>`;
+                 });
+
+                 // Basic entities like &lt; &gt; &amp; (add more if needed)
+                 html = html.replace(/(&amp;[a-zA-Z]+;)/g, '<span class="html-entity">$1</span>');
+
+                 codeBlock.innerHTML = html;
+             }
+
+            // --- Event Listeners ---
+
+            // Settings Modal
+            if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
+            if (closeSettingsBtn) closeSettingsBtn.addEventListener('click', closeSettings);
+            if (settingsModal) {
+                settingsModal.addEventListener('click', (event) => {
+                    // Close if clicked outside the content area
+                    if (event.target === settingsModal) {
+                        closeSettings();
+                    }
+                });
+            }
+
+            // Theme Toggle
+            if (themeToggle) {
+                themeToggle.addEventListener('change', () => {
+                    currentTheme = themeToggle.checked ? 'light' : 'dark';
+                    localStorage.setItem('theme', currentTheme);
+                    applyTheme();
+                    updateThemeLabelText(); // Update label immediately
+                });
+            }
+
+            // Language Selector
+            if (languageSelect) {
+                languageSelect.addEventListener('change', () => {
+                    currentLang = languageSelect.value;
+                    localStorage.setItem('language', currentLang);
+                    applyLanguage();
+                });
+            }
+
+            // Example Toggles
+            toggleExampleButtons.forEach(button => {
+                button.addEventListener('click', () => toggleExample(button));
+            });
+
+            // --- Initial Setup ---
+
+            // Apply stored/default theme and language on load
+            applyTheme();
+            languageSelect.value = currentLang; // Set dropdown to current language
+            applyLanguage(); // Apply language after setting dropdown
+
+            // Apply syntax highlighting to all examples
+            document.querySelectorAll('.example pre code').forEach(highlightSyntax);
+
+            // Card Animation Delay (optional enhancement)
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                 const delay = index * 100; // Stagger animation
+                card.style.animationDelay = `${delay}ms`;
+            });
+
+        });
+    </script>
+
+</body>
+</html>
